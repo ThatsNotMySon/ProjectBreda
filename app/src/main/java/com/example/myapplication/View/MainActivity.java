@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,8 @@ import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.i(TAG, "OnCreate");
     }
 
     @Override
@@ -33,18 +38,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent i = null;
         switch (item.getItemId()){
-            case R.id.homeItem:
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.settingsItem:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
                 return true;
             case R.id.routeItem:
                 Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
+//                i = new Intent(this, SettingsActivity.class);
+//                startActivity(i);
                 return true;
             case R.id.helpItem:
                 Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+//                i = new Intent(this, SettingsActivity.class);
+//                startActivity(i);
                 return true;
         }
         return super.onOptionsItemSelected(item);
