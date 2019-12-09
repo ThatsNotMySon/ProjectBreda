@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.helpItem:
                 Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
-//                i = new Intent(this, SettingsActivity.class);
-//                startActivity(i);
+                i = new Intent(this, HelpActivity.class);
+                startActivity(i);
                 return true;
         }
         return super.onOptionsItemSelected(item);
