@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.routeItem:
                 Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
-//                i = new Intent(this, SettingsActivity.class);
-//                startActivity(i);
+                i = new Intent(this, RouteActivity.class);
+                startActivity(i);
                 return true;
             case R.id.helpItem:
                 Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
