@@ -1,5 +1,6 @@
 package com.example.myapplication.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 
@@ -27,5 +29,24 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.homeItem:
+                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.settingsItem:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.routeItem:
+                Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.helpItem:
+                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
