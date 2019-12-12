@@ -8,5 +8,5 @@ public class GoogleMapsDirectionsAPI extends API {
         super(context);
     }
 
-    public void getDirections()
+//    public void getDirections()
 }
