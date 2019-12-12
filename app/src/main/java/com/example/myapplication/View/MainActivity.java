@@ -12,19 +12,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.myapplication.Model.RouteData.Route;
-import com.example.myapplication.Model.LocationData.LocationManager;
+import com.example.myapplication.Model.LocationData.LocationApi;
+import com.example.myapplication.Model.LocationData.LocationApiListener;
 import com.example.myapplication.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "MainActivity";
 
+    //Voeg locationListeners aan dit toe om het naar de locatie te laten luisteren
+    private ArrayList<LocationApiListener> locationListeners;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LocationManager locationManager = new LocationManager(this);
+        LocationApi locationApi = new LocationApi(locationListeners,this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

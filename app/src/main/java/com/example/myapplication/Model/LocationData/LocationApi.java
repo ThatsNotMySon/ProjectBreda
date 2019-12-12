@@ -11,14 +11,16 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
+import java.util.ArrayList;
+
 public class LocationApi {
 
     private android.location.LocationManager locationManager;
     private LocationListener locationListener;
-    private LocationApiListener locationApiListener;
+    private ArrayList<LocationApiListener> locationApiListeners;
 
-    public LocationApi(LocationApiListener locationApiListener , Context context) {
-        this.locationApiListener = locationApiListener;
+    public LocationApi(ArrayList<LocationApiListener> locationApiListener , Context context) {
+        this.locationApiListeners = locationApiListener;
         //setupLocationService kan ook later aangeroepen worden.
         setupLocationService(context);
     }
@@ -28,22 +30,30 @@ public class LocationApi {
         this.locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                locationApiListener.OnLocationChanged(location);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnLocationChanged(location);
+                }
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                locationApiListener.OnStatusChanged(status);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnStatusChanged(status);
+                }
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                locationApiListener.OnProviderEnabled(provider);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnProviderEnabled(provider);
+                }
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                locationApiListener.OnProviderDisabled(provider);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnProviderDisabled(provider);
+                };
             }
         };
         if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
