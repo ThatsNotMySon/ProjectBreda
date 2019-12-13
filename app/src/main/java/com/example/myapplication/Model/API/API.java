@@ -8,9 +8,12 @@ import com.android.volley.toolbox.Volley;
 
 public abstract class API {
 
+    protected Context context;
+
     private RequestQueue queue;
 
     public API(Context context) {
+        this.context = context;
         this.queue = Volley.newRequestQueue(context);
     }
 
