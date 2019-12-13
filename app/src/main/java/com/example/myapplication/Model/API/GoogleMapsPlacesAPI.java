@@ -16,6 +16,18 @@ import java.util.HashMap;
 // CAREFUL !! THIS API IS NOT FREE
 
 public class GoogleMapsPlacesAPI extends API {
+
+    // Example usage
+    private void UsageExample(Context context) {
+        GoogleMapsPlacesAPI placesAPI = new GoogleMapsPlacesAPI(context);
+        placesAPI.getBasicPlacesInfo("Breda", new GoogleMapsPlacesAPI.JsonObjectCallback() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Do something
+            }
+        });
+    }
+
     private HashMap<String, String> placesIdCache;
     private HashMap<String, JSONObject> placesCache;
     private static String FREE_API_FIELDS =
