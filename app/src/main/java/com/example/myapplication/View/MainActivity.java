@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        SettingsActivity.setLanguage(SettingsActivity.languageCode, getResources());
         LocationManager locationManager = new LocationManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
