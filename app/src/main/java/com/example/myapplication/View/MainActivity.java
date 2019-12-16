@@ -19,12 +19,12 @@ import com.example.myapplication.R;
 public class MainActivity extends AppCompatActivity {
 
     private static String TAG = "MainActivity";
+    private static String languageCode = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SettingsActivity.setLanguage(SettingsActivity.languageCode, getResources());
         LocationManager locationManager = new LocationManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -38,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!languageCode.equals(SettingsActivity.languageCode)){
+            languageCode = SettingsActivity.languageCode;
+            recreate();
+        }
+        Log.i("onResume", "PING");
     }
 
     @Override

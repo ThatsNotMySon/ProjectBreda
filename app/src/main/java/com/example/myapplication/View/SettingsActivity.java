@@ -77,8 +77,5 @@ public class SettingsActivity extends AppCompatActivity {
         }
         res.updateConfiguration(conf, dm);
         languageCode = localCode;
-
-        //Viewgroup vg;
-        //vg.invalidate();
     }
 }
