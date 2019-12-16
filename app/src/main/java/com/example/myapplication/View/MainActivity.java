@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.Model.LocationData.LocationApi;
 import com.example.myapplication.Model.LocationData.LocationApiListener;
+import com.example.myapplication.Model.RouteData.Route;
+import com.example.myapplication.Model.RouteTracker;
 import com.example.myapplication.R;
 
 import java.util.ArrayList;
@@ -24,11 +26,19 @@ public class MainActivity extends AppCompatActivity {
 
     //Voeg locationListeners aan dit toe om het naar de locatie te laten luisteren
     private ArrayList<LocationApiListener> locationListeners;
+    private RouteTracker routeTracker;
+    private Route route;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //LocationApi wordt hier geinitialiseer. Maar de route bestaat nu alleen nog uit een klasse zonder waardes.
+        this.route = new Route();
+        this.routeTracker = new RouteTracker(this.route);
+        this.locationListeners = new ArrayList<>();
+        this.locationListeners.add(this.routeTracker);
         LocationApi locationApi = new LocationApi(locationListeners,this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
