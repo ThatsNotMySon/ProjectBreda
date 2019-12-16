@@ -29,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static String TAG = "SettingsActivity";
     private Spinner spinner;
+    public static String languageCode = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +63,16 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setAppLocale(String localeCode){
-        Resources res = getResources();
+        setLanguage(localeCode, getResources());
+    }
+
+    public static void setLanguage(String localCode, Resources res){
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-            conf.setLocale(new Locale(localeCode.toLowerCase()));
+            conf.setLocale(new Locale(localCode.toLowerCase()));
         } else {
-            conf.locale = new Locale(localeCode.toLowerCase());
+            conf.locale = new Locale(localCode.toLowerCase());
         }
         res.updateConfiguration(conf, dm);
     }
