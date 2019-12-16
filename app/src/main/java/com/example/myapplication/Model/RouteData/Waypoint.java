@@ -1,15 +1,24 @@
 package com.example.myapplication.Model.RouteData;
 
-public class Waypoint {
+import android.location.Location;
+
+import java.io.Serializable;
+
+public class Waypoint implements Serializable {
 
     private PointOfInterest pointOfInterest;
     private Boolean visited = false;
 
-    private float longitude;
-    private float latitude;
+    private transient Location location;
+    private float lat;
+    private float lon;
     
     public Waypoint(float latitude, float longitude) {
-        
+         this.location = new Location("");
+         this.location.setLatitude(latitude);
+         this.location.setLongitude(longitude);
+         this.lat = latitude;
+         this.lon = longitude;
     }
 
     public PointOfInterest getPointOfInterest() {
@@ -28,11 +37,7 @@ public class Waypoint {
         this.visited = visited;
     }
 
-    public float getLongitude() {
-        return longitude;
-    }
-
-    public float getLatitude() {
-        return latitude;
+    public Location getLocation() {
+        return location;
     }
 }

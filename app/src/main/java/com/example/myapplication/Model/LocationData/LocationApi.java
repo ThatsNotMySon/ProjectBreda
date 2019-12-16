@@ -18,11 +18,18 @@ public class LocationApi {
     private android.location.LocationManager locationManager;
     private LocationListener locationListener;
     private ArrayList<LocationApiListener> locationApiListeners;
+    private Location lastLocation;
+    private LocationCallback locationCallback;
 
-    public LocationApi(ArrayList<LocationApiListener> locationApiListener , Context context) {
+    public LocationApi(ArrayList<LocationApiListener> locationApiListener , Context context, LocationCallback locationCallback) {
         this.locationApiListeners = locationApiListener;
+        this.locationCallback = locationCallback;
         //setupLocationService kan ook later aangeroepen worden.
         setupLocationService(context);
+    }
+
+    public Location getLastLocation() {
+        return lastLocation;
     }
 
     public void setupLocationService(Context context) {
@@ -30,6 +37,7 @@ public class LocationApi {
         this.locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                locationCallback.locationCallback(location);
                 for(LocationApiListener locationApiListener : locationApiListeners) {
                     locationApiListener.OnLocationChanged(location);
                 }
