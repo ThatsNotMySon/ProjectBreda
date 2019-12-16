@@ -16,7 +16,7 @@ import com.example.myapplication.Model.LocationData.LocationManager;
 import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends LanguageActivity {
 
     private static String TAG = "MainActivity";
     private static String languageCode = "en";
@@ -40,15 +40,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!languageCode.equals(SettingsActivity.languageCode)){
-            languageCode = SettingsActivity.languageCode;
-            recreate();
-        }
-        Log.i("onResume", "PING");
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

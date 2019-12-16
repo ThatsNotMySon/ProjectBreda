@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends LanguageActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

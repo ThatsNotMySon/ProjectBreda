@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.example.myapplication.R;
 
-public class RouteActivity extends AppCompatActivity {
+public class RouteActivity extends LanguageActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
