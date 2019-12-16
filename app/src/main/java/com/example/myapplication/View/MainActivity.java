@@ -17,10 +17,14 @@ import com.example.myapplication.Model.LocationData.LocationApiListener;
 import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.Model.RouteTracker;
 import com.example.myapplication.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static String TAG = "MainActivity";
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<LocationApiListener> locationListeners;
     private RouteTracker routeTracker;
     private Route route;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        //MapView mapView = findViewById(R.id.map);
+        //mapView.getMapAsync(this);
+        mapFragment.getMapAsync(this);
+
 
         Log.i(TAG, "OnCreate");
     }
@@ -75,5 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
     }
 }
