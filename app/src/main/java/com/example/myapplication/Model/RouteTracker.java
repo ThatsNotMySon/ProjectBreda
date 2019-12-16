@@ -9,7 +9,7 @@ public class RouteTracker implements LocationApiListener {
 
     private Route route;
 
-    RouteTracker(Route route) {
+    public RouteTracker(Route route) {
         this.route = route;
     }
 
