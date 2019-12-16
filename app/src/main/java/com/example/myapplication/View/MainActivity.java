@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,14 +19,27 @@ import com.example.myapplication.Model.LocationData.LocationApiListener;
 import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.Model.RouteTracker;
 import com.example.myapplication.R;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, ResultCallback<Status> {
 
     private static String TAG = "MainActivity";
 
@@ -84,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 i = new Intent(this, HelpActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.testGeofence:
+                startGeofence();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -91,5 +109,97 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+        map.setOnMarkerClickListener(this);
+        map.setOnMapClickListener(this);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        markerForGeofence(latLng);
+    }
+
+    Marker geofenceMarker;
+
+    private void markerForGeofence(LatLng latLng) {
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title("GeofenceTest");
+
+        if(map != null){
+            if(geofenceMarker != null){
+                geofenceMarker.remove();
+            }
+            geofenceMarker = map.addMarker(markerOptions);
+        }
+    }
+
+    GeofencingRequest geofencingRequest;
+    private void startGeofence(){
+        if(geofenceMarker != null){
+            Geofence geofence = createGeofence(geofenceMarker.getPosition(), 50);
+            geofencingRequest = createGeoRequest(geofence);
+            addGeoFence(geofence);
+        }
+    }
+
+    private void addGeoFence(Geofence geofence) {
+        GeofencingClient client = LocationServices.getGeofencingClient(this);
+        client.addGeofences(geofencingRequest,createGeofencingPendingIntent())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        drawGeofence();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
+    PendingIntent pendingIntent;
+    private PendingIntent createGeofencingPendingIntent() {
+        if(pendingIntent != null){
+            return pendingIntent;
+        }
+
+        Intent i = new Intent(this, WaypointActivity.class);
+        return PendingIntent.getService(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private GeofencingRequest createGeoRequest(Geofence geofence) {
+        return new GeofencingRequest.Builder()
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofence(geofence)
+                .build();
+    }
+
+    private Geofence createGeofence(LatLng position, int radius) {
+        return new Geofence.Builder()
+                .setRequestId("Test Geofence")
+                .setCircularRegion(position.latitude,position.longitude,radius)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .setExpirationDuration(60 * 60 * 1000)
+                .build();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
+
+    @Override
+    public void onResult(@NonNull Status status) {
+    }
+
+    private void drawGeofence() {
+        CircleOptions circleOptions = new CircleOptions()
+                .center(geofenceMarker.getPosition())
+                .strokeColor(Color.argb(50,70,70,70))
+                .fillColor(Color.argb(100,150,150,150))
+                .radius(50);
+        map.addCircle(circleOptions);
     }
 }
