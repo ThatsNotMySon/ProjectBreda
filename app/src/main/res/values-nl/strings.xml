@@ -3,4 +3,6 @@
     <string name="settings">Instellingen</string>
     <string name="english">Engels</string>
     <string name="dutch">Nederlands</string>
+    <string name="selectLanguage">Selecteer taal</string>
+    <string name="languageChanged">Ga terug om verandering te zien</string>
 </resources>

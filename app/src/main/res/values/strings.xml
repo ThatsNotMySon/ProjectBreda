@@ -6,4 +6,6 @@
     <string name="route" translatable="false">Route</string>
     <string name="english">English</string>
     <string name="dutch">Dutch</string>
+    <string name="selectLanguage">Select language</string>
+    <string name="languageChanged">Return to see changes</string>
 </resources>

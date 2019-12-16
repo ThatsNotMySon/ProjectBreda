@@ -47,17 +47,17 @@ public class MainActivity extends LanguageActivity {
         Intent i = null;
         switch (item.getItemId()){
             case R.id.settingsItem:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 return true;
             case R.id.routeItem:
-                Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, RouteActivity.class);
                 startActivity(i);
                 return true;
             case R.id.helpItem:
-                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, HelpActivity.class);
                 startActivity(i);
                 return true;

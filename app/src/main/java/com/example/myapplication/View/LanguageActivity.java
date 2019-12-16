@@ -14,6 +14,5 @@ public abstract class LanguageActivity extends AppCompatActivity {
             languageCode = SettingsActivity.languageCode;
             recreate();
         }
-        Log.i("onResume", "PING");
     }
 }

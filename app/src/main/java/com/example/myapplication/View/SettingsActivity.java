@@ -65,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void setAppLocale(String localeCode){
         setLanguage(localeCode, getResources());
+        Toast.makeText(this, getResources().getString(R.string.languageChanged), Toast.LENGTH_SHORT).show();
     }
 
     public static void setLanguage(String localCode, Resources res){
