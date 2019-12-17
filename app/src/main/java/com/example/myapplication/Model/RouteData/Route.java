@@ -8,7 +8,7 @@ public class Route {
     private String name;
 
     public Route() {
-
+        waypoints = new ArrayList<>();
     }
 
     public ArrayList<Waypoint> getWaypoints() {

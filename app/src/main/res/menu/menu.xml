@@ -16,4 +16,8 @@
         android:id="@+id/helpItem"
         android:title="@string/help"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/testGeofence"
+        android:title="Geofence"
+        app:showAsAction="never"/>
 </menu>
