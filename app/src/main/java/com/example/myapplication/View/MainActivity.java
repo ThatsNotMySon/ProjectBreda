@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.myapplication.Model.API.GeofenceBroadcastReceiver;
+import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
 import com.example.myapplication.Model.Datamanagement.DataParser;
 import com.example.myapplication.Model.LocationData.LocationApi;
 import com.example.myapplication.Model.LocationData.LocationApiListener;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationApi locationApi;
     private GeoApiContext mGeoApiContext;
     private Location mUserPosition;
-    private final String MY_API_KEY = "f9e60521-895b-457d-957c-deb7e50df84f";
+    private GoogleMapsDirectionsAPI googleMapsDirectionsAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //LocationApi wordt hier geinitialiseer. Maar de route bestaat nu alleen nog uit een klasse zonder waardes.
         this.route = new Route();
-        route.addWaypoint(new Waypoint(51.519053f, 4.457099f, "Test", "Bruhh"));
         this.routeTracker = new RouteTracker(this.route);
         this.locationListeners = new ArrayList<>();
         this.locationListeners.add(this.routeTracker);
@@ -98,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mUserPosition = location;
                 MarkerOptions markerOptions = new MarkerOptions()
                         .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .title("Testmarker");
+                        .title("User")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 if (map != null) {
                     if (testmarker != null) {
                         testmarker.remove();
@@ -124,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         Log.i(TAG, "OnCreate");
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -163,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.map = googleMap;
         map.setOnMarkerClickListener(this);
         map.setOnMapClickListener(this);
+        this.googleMapsDirectionsAPI = new GoogleMapsDirectionsAPI(this, map);
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        route.addWaypoint(new Waypoint((float)latLng.latitude, (float)latLng.longitude, "Test", "Bruhh"));
         for (Waypoint waypoint : route.getWaypoints()) {
             if (waypoint.getMarker() == null) {
                 waypoint.setMarker(map.addMarker(new MarkerOptions()
@@ -173,156 +182,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
-    }
-
-    private String getUrl(LatLng origin, LatLng dest) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Detination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        String trafficMode = "mode=walking";
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + trafficMode + "&key=" + MY_API_KEY;
-        // Output format
-        String output = "/json";
-        // Building the url to the web service
-        String url = "http://directions-aei.avans.nl:3000/directions" + "?" + parameters;
-        return url;
-    }
-
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(strUrl);
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-            // Connecting to url
-            urlConnection.connect();
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            data = sb.toString();
-            Log.d("downloadUrl", data.toString());
-            br.close();
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        } finally {
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
-    }
-
-    @Override
     public boolean onMarkerClick(Marker marker) {
-        String url = getUrl(new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude()), marker.getPosition());
-        FetchUrl fetchUrl = new FetchUrl();
-        fetchUrl.execute(url);
+        googleMapsDirectionsAPI.executeDirections(new LatLng(mUserPosition.getLatitude(),mUserPosition.getLongitude()), marker.getPosition());
         return false;
     }
 
-    private class FetchUrl extends AsyncTask<String, Void, String> {
 
-        @Override
-        protected String doInBackground(String... url) {
-
-            // For storing data from web service
-            String data = "";
-
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-            // Invokes the thread for parsing the JSON data
-            parserTask.execute(result);
-
-        }
-    }
-
-    private class ParserTask extends AsyncTask<String, Integer, List<List<LatLng>>> {
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<LatLng>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<LatLng>> routeData = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-
-                Log.d("ParserTask", jsonData[0]);
-                DataParser parser = new DataParser();
-                Log.d("ParserTask", parser.toString());
-
-                // Starts parsing routes data
-                routeData = parser.parseRoutesInfo(jObject);
-                Log.d("ParserTask", "Executing routes");
-                Log.d("ParserTask-routes: ", routeData.toString());
-
-            } catch (Exception e) {
-                Log.d("ParserTask", e.toString());
-                e.printStackTrace();
-            }
-            return routeData;
-        }
-
-        // Executes in UI thread, after the parsing process
-        @Override
-        protected void onPostExecute(List<List<LatLng>> result) {
-            PolylineOptions lineOptions = new PolylineOptions();
-
-            LatLng northEast = result.get(0).get(0);
-            LatLng southWest = result.get(0).get(1);
-            // The first list contained the bounds of the route and is not part of the route:
-            result.remove(0);
-
-            for (List<LatLng> leg : result) {
-                lineOptions.addAll(leg);
-            }
-
-            lineOptions.width(10);
-            lineOptions.color(Color.RED);
-
-            Log.d("onPostExecute", "onPostExecute lineoptions decoded");
-
-            // Drawing polyline in the Google Map for the i-th route
-            if (lineOptions != null) {
-                map.addPolyline(lineOptions);
-
-                // zoom to bounding-box of the route:
-                LatLngBounds bounds = new LatLngBounds(southWest, northEast);
-                int padding = 80;
-                map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
-
-            } else {
-                Log.d("onPostExecute", "without Polylines drawn");
-            }
-        }
-    }
 }

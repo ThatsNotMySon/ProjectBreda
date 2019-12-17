@@ -16,7 +16,6 @@ public class APIManager {
     private ArrayList<API> apis = new ArrayList<>();
 
     public APIManager(Context context) {
-        this.apis.add(new GoogleMapsDirectionsAPI(context));
         this.apis.add(new GoogleMapsGeoLocationAPI(context));
         this.apis.add(new GoogleMapsPlacesAPI(context));
     }
