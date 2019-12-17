@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     public void onBindViewHolder(@NonNull RouteViewHolder holder, int position) {
         final Database database = dataset.get(position);
         holder.routeID.setText("" + database.getRouteID());
+        holder.imageView.setImageResource(R.drawable.image1);
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -61,6 +63,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     }
 
     @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
     public int getItemCount() {
         Log.d("sizedata", "Send size");
         return dataset.size();
@@ -69,10 +76,12 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     public class RouteViewHolder extends RecyclerView.ViewHolder{
 
         public TextView routeID;
+        public ImageView imageView;
 
         public RouteViewHolder(@NonNull View itemView) {
             super(itemView);
             routeID = itemView.findViewById(R.id.route_name);
+            imageView = itemView.findViewById(R.id.imageViews);
             Log.d("viewholder","assinged viewholder");
         }
     }

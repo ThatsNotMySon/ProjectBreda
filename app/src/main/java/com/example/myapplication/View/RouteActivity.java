@@ -32,7 +32,7 @@ public class RouteActivity extends AppCompatActivity {
         int orientation = getResources().getConfiguration().orientation;
 
         this.databaseManager = new DatabaseManager(getApplicationContext());
-
+        fillDatabase();
        // fillDatabase();
 
         databases = new ArrayList<>();
@@ -59,6 +59,7 @@ public class RouteActivity extends AppCompatActivity {
         }
 
         this.routeAdapter = new RouteAdapter(finallist,databases);
+        routeAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(this.routeAdapter);
         Log.d("recyclerview", "recylerviewset");
     }
