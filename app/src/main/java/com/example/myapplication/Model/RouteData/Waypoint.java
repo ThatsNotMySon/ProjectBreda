@@ -15,7 +15,7 @@ public class Waypoint implements Serializable {
     private transient Location location;
     private float lat;
     private float lon;
-    private Marker marker;
+    private transient Marker marker;
     
     public Waypoint(float latitude, float longitude, String name, String description) {
          this.location = new Location("");

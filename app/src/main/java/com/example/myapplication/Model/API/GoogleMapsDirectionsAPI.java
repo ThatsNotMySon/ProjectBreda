@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoogleMapsDirectionsAPI extends API {
@@ -33,20 +34,29 @@ public class GoogleMapsDirectionsAPI extends API {
         this.map = map;
     }
 
-    public void executeDirections(LatLng origin, LatLng dest){
+    public void executeDirections(LatLng origin, ArrayList<LatLng> dest){
         String url = getUrl(origin, dest);
         FetchUrl FetchUrl = new FetchUrl();
         FetchUrl.execute(url);
     }
 
-    public String getUrl(LatLng origin, LatLng dest) {
+    public String getUrl(LatLng origin, ArrayList<LatLng> waypoints) {
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         // Detination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        String str_dest = "destination=" + waypoints.get(waypoints.size()-1).latitude + "," + waypoints.get(waypoints.size()-1).longitude;
+        String str_waypoints = "waypoints=";
+
+        for (int i = 0; i < waypoints.size()-1; i++) {
+            if(i == 0) {
+                str_waypoints += "via:" + waypoints.get(i).latitude + "," + waypoints.get(i).longitude;
+            } else {
+                str_waypoints += "%7Cvia:" + waypoints.get(i).latitude + "," + waypoints.get(i).longitude;
+            }
+        }
         String trafficMode = "mode=walking";
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + trafficMode + "&key=" + MY_API_KEY;
+        String parameters = str_origin + "&" + str_dest + "&" + str_waypoints + "&" + trafficMode + "&key=" + MY_API_KEY;
         // Output format
         String output = "/json";
         // Building the url to the web service

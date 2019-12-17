@@ -26,6 +26,7 @@ import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.Model.RouteData.Waypoint;
 import com.example.myapplication.Model.RouteTracker;
 import com.example.myapplication.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,6 +34,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Database currentFirst;
     private ArrayList<Database> allwaypoints;
     private ArrayList<Database> currentRouteWaypoints;
+    private ArrayList<LatLng> waypointsLatLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +66,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             allwaypoints = (ArrayList<Database>) getIntent().getSerializableExtra("allwaypoints");
 
             currentRouteWaypoints = new ArrayList<>();
-            for(Database database: allwaypoints){
-                if(database.getRouteID() == currentFirst.getRouteID()){
+            for (Database database : allwaypoints) {
+                if (database.getRouteID() == currentFirst.getRouteID()) {
                     currentRouteWaypoints.add(database);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
+
+        }
+        //LocationApi wordt hier geinitialiseer. Maar de route bestaat nu alleen nog uit een klasse zonder waardes.
+        this.route = new Route();
+        try {
+            for (Database db : currentRouteWaypoints) {
+                route.addWaypoint(new Waypoint(db.getX(), db.getY(), String.valueOf(db.getId()), db.getInfo()));
+            }
+        } catch (Exception e) {
 
         }
 
 
-
-
-
-        //LocationApi wordt hier geinitialiseer. Maar de route bestaat nu alleen nog uit een klasse zonder waardes.
-        this.route = new Route();
         this.routeTracker = new RouteTracker(this.route);
         this.locationListeners = new ArrayList<>();
         this.locationListeners.add(this.routeTracker);
@@ -97,9 +105,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 for (Waypoint waypoint : route.getWaypoints()) {
                     if (location.distanceTo(waypoint.getLocation()) <= 50) {
-                        Intent intent = new Intent(MainActivity.this, WaypointActivity.class);
-                        intent.putExtra("WAYPOINT", waypoint);
-                        startActivity(intent);
+                        if(!waypoint.getVisited()) {
+                            waypoint.setVisited(true);
+                            Intent intent = new Intent(MainActivity.this, WaypointActivity.class);
+                            intent.putExtra("WAYPOINT", waypoint);
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -155,23 +166,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.setOnMarkerClickListener(this);
         map.setOnMapClickListener(this);
         this.googleMapsDirectionsAPI = new GoogleMapsDirectionsAPI(this, map);
-    }
-
-    @Override
-    public void onMapClick(LatLng latLng) {
-        route.addWaypoint(new Waypoint((float)latLng.latitude, (float)latLng.longitude, "Test", "Bruhh"));
+        this.waypointsLatLng = new ArrayList<>();
         for (Waypoint waypoint : route.getWaypoints()) {
+            waypointsLatLng.add(new LatLng(waypoint.getLat(),waypoint.getLon()));
             if (waypoint.getMarker() == null) {
                 waypoint.setMarker(map.addMarker(new MarkerOptions()
                         .position(new LatLng(waypoint.getLat(), waypoint.getLon()))
                         .title(waypoint.getName())));
             }
         }
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.573931, 4.764335),13));
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if (mUserPosition != null) {
+            googleMapsDirectionsAPI.executeDirections(new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude()), waypointsLatLng);
+        }
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        googleMapsDirectionsAPI.executeDirections(new LatLng(mUserPosition.getLatitude(),mUserPosition.getLongitude()), marker.getPosition());
+        if (mUserPosition != null) {
+//            googleMapsDirectionsAPI.executeDirections(new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude()), marker.getPosition());
+        }
         return false;
     }
 
