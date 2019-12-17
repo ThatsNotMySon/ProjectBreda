@@ -16,10 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-
-import com.example.myapplication.Model.API.GeofenceBroadcastReceiver;
 import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
-import com.example.myapplication.Model.Datamanagement.DataParser;
 import com.example.myapplication.Model.LocationData.LocationApi;
 import com.example.myapplication.Model.LocationData.LocationApiListener;
 import com.example.myapplication.Model.LocationData.LocationCallback;
@@ -27,45 +24,14 @@ import com.example.myapplication.Model.RouteData.Route;
 import com.example.myapplication.Model.RouteData.Waypoint;
 import com.example.myapplication.Model.RouteTracker;
 import com.example.myapplication.R;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingClient;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.location.places.*;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.maps.DirectionsApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.PendingResult;
-import com.google.maps.model.DirectionsResult;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -78,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap map;
     private Marker testmarker;
     private LocationApi locationApi;
-    private GeoApiContext mGeoApiContext;
     private Location mUserPosition;
     private GoogleMapsDirectionsAPI googleMapsDirectionsAPI;
 
