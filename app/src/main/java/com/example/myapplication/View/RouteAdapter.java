@@ -13,15 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHolder> {
 
     private ArrayList<Database> dataset;
+    private ArrayList<Database> allwaypoints;
 
-    public RouteAdapter(ArrayList<Database> dataset){
+    public RouteAdapter(ArrayList<Database> dataset, ArrayList<Database> allwaypoints){
         this.dataset = dataset;
+        this.allwaypoints = allwaypoints;
         Log.d("dataset", "changed dataset");
 
     }
@@ -39,16 +40,18 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
     @Override
     public void onBindViewHolder(@NonNull RouteViewHolder holder, int position) {
         final Database database = dataset.get(position);
-        holder.routeID.setText(database.getRouteID());
+        holder.routeID.setText("" + database.getRouteID());
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(
                         v.getContext(),
-                        RouteActivity.class
+                        MainActivity.class
                 );
-                intent.putExtra("object", (Serializable) database);
+                intent.putExtra("routeId",  database);
+                intent.putExtra("allwaypoints", allwaypoints);
+
 
 //                v.getContext().startActivity(intent);
                 v.getContext().startActivity(intent);
@@ -69,7 +72,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.RouteViewHol
 
         public RouteViewHolder(@NonNull View itemView) {
             super(itemView);
-            routeID = (TextView) itemView.findViewById(R.id.name);
+            routeID = itemView.findViewById(R.id.route_name);
             Log.d("viewholder","assinged viewholder");
         }
     }

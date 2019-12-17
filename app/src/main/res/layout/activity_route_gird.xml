@@ -18,7 +18,7 @@
         tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/route_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
