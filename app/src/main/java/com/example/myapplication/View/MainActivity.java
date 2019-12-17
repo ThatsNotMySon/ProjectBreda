@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.myapplication.Model.LocationData.LocationManager;
 import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
 import com.example.myapplication.Model.LocationData.LocationApi;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
     private static String TAG = "MainActivity";
+    private static String languageCode = "en";
 
     //Voeg locationListeners aan dit toe om het naar de locatie te laten luisteren
     private ArrayList<LocationApiListener> locationListeners;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        LocationManager locationManager = new LocationManager(this);
 
         try {
             currentFirst = (Database) getIntent().getSerializableExtra("routeId");
@@ -134,22 +137,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent i = null;
         switch (item.getItemId()) {
             case R.id.settingsItem:
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, SettingsActivity.class);
                 startActivity(i);
                 return true;
             case R.id.routeItem:
-                Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Route", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, RouteActivity.class);
                 startActivity(i);
                 return true;
             case R.id.helpItem:
-                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Help", Toast.LENGTH_SHORT).show();
                 i = new Intent(this, HelpActivity.class);
                 startActivity(i);
                 return true;

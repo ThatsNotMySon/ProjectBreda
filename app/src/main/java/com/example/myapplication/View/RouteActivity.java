@@ -8,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 
 import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.Model.Datamanagement.DatabaseManager;
 import com.example.myapplication.R;
 
-import java.util.ArrayList;
-
-public class RouteActivity extends AppCompatActivity {
+public class RouteActivity extends LanguageActivity {
 
     private DatabaseManager databaseManager;
     private RecyclerView recyclerView;
