@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
 import com.example.myapplication.Model.LocationData.LocationApi;
 import com.example.myapplication.Model.LocationData.LocationApiListener;
@@ -46,11 +48,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationApi locationApi;
     private Location mUserPosition;
     private GoogleMapsDirectionsAPI googleMapsDirectionsAPI;
+    private Database currentFirst;
+    private ArrayList<Database> allwaypoints;
+    private ArrayList<Database> currentRouteWaypoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        try {
+            currentFirst = (Database) getIntent().getSerializableExtra("routeId");
+            allwaypoints = (ArrayList<Database>) getIntent().getSerializableExtra("allwaypoints");
+
+            currentRouteWaypoints = new ArrayList<>();
+            for(Database database: allwaypoints){
+                if(database.getRouteID() == currentFirst.getRouteID()){
+                    currentRouteWaypoints.add(database);
+                }
+            }
+        }catch (Exception e){
+
+        }
+
+
+
+
 
         //LocationApi wordt hier geinitialiseer. Maar de route bestaat nu alleen nog uit een klasse zonder waardes.
         this.route = new Route();

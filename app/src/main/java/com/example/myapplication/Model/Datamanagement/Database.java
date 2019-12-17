@@ -1,6 +1,8 @@
 package com.example.myapplication.Model.Datamanagement;
 
-public class Database {
+import java.io.Serializable;
+
+public class Database implements Serializable {
 
     private float x;
     private float y;
@@ -8,11 +10,11 @@ public class Database {
     private int id;
     private int routeID;
 
-    public Database(float x, float y, String info, int id, int routeID) {
+    public Database(float x, float y, String info , int routeID) {
         this.x = x;
         this.y = y;
         this.info = info;
-        this.id = id;
+
         this.routeID = routeID;
     }
 
