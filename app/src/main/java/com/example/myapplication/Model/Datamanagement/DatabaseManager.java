@@ -18,7 +18,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COL2 = "x";
     private static final String COL3 = "y";
     private static final String COL4 = "info";
-    private static final String[] COLUMS = {COL1, COL2, COL3, COL4};
+    private static final String COL5 = "routeID";
+    private static final String[] COLUMS = {COL1, COL2, COL3, COL4, COL5};
 
     public DatabaseManager(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -27,7 +28,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +"x FLOAT, "
-                + "y FLOAT, " + "info STRING )";
+                + "y FLOAT, " + "info STRING, " + "routeID INTEGER )";
         sqLiteDatabase.execSQL(createTable);
     }
 
@@ -59,6 +60,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 database.setX(cursor.getFloat(1));
                 database.setY(cursor.getFloat(2));
                 database.setInfo(cursor.getString(3));
+                database.setRouteID(Integer.parseInt(cursor.getString(4)));
                 databases.add(database);
             } while (cursor.moveToNext());
         }
@@ -86,6 +88,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         database.setX(cursor.getFloat(1));
         database.setY(cursor.getFloat(2));
         database.setInfo(cursor.getString(3));
+        database.setRouteID(Integer.parseInt(cursor.getString(4)));
 
         return database;
     }
@@ -97,6 +100,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         contentValues.put(COL2, database.getX());
         contentValues.put(COL3, database.getY());
         contentValues.put(COL4, database.getInfo());
+        contentValues.put(COL5, database.getRouteID());
 
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 

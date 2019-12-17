@@ -6,12 +6,14 @@ public class Database {
     private float y;
     private String info;
     private int id;
+    private int routeID;
 
-    public Database(float x, float y, String info, int id) {
+    public Database(float x, float y, String info, int id, int routeID) {
         this.x = x;
         this.y = y;
         this.info = info;
         this.id = id;
+        this.routeID = routeID;
     }
 
     public Database() {
@@ -48,5 +50,13 @@ public class Database {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRouteID() {
+        return routeID;
+    }
+
+    public void setRouteID(int routeID) {
+        this.routeID = routeID;
     }
 }
