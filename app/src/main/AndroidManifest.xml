@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".View.RouteActivity"></activity>
+        <activity android:name=".View.RouteGird"></activity>
+        <activity android:name=".View.RouteActivity" />
         <activity android:name=".View.HelpActivity" />
         <activity android:name=".View.SettingsActivity" />
         <activity android:name=".View.MainActivity">
