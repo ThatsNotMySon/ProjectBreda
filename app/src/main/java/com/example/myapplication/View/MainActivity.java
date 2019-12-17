@@ -17,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.myapplication.Model.LocationData.LocationManager;
 import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
 import com.example.myapplication.Model.LocationData.LocationApi;
@@ -62,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LocationManager locationManager = new LocationManager(this);
-
         try {
             currentFirst = (Database) getIntent().getSerializableExtra("routeId");
             allwaypoints = (ArrayList<Database>) getIntent().getSerializableExtra("allwaypoints");
