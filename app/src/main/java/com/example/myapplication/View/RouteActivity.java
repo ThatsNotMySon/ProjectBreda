@@ -33,7 +33,7 @@ public class RouteActivity extends LanguageActivity {
         int orientation = getResources().getConfiguration().orientation;
 
         this.databaseManager = new DatabaseManager(getApplicationContext());
-        //fillDatabase();
+        fillDatabase();
 
         databases = new ArrayList<>();
         databases = (ArrayList<Database>) this.databaseManager.allWaypoints();
@@ -65,6 +65,7 @@ public class RouteActivity extends LanguageActivity {
     }
 
     public void fillDatabase(){
+        databaseManager.removeData();
         databaseManager.addData(new Database(51.594112f, 4.779417f, "VVV Beginpunt tot maart 2019", "VVV startpoint until march 2019", 1));
         databaseManager.addData(new Database(51.593278f, 4.779388f, "Liefdeszuster \n Symbolisch beeld voor het religieus verleden van Breda. De Liefdezuster geeft de dienstverlening weer, zoals de Gasthuiszusters die eeuwenlang in de praktijk brachten. Het opschrift is verwarrend, waarschijnlijk zijn twee religieuze orden met elkaar verward en samengevoegd.",
                 "Liefdeszuster \n" +

@@ -97,6 +97,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return database;
     }
 
+    public void removeData(){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME);
+    }
 
     public boolean addData(Database database){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
