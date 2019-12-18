@@ -67,7 +67,7 @@ public class RouteActivity extends LanguageActivity {
     public void fillDatabase(){
         databaseManager.addData(new Database(51.594112f, 4.779417f, "VVV Beginpunt tot maart 2019", 1));
         databaseManager.addData(new Database(51.593278f, 4.779388f, "Liefdeszuster", 1));
-        databaseManager.addData(new Database(51.5925f, 4.779695f, "Nassau Baronie monument", 1));
+        databaseManager.addData(new Database(51.592624f, 4.779659f, "Nassau Baronie monument", 1));
         databaseManager.addData(new Database(51.592833f, 4.778472f, "The light house", 1));
         databaseManager.addData(new Database(51.590612f, 4.776167f, "Kasteel van Breda", 1));
         databaseManager.addData(new Database(51.589695f, 4.776138f, "Stadhouderspoort", 1));
@@ -76,8 +76,8 @@ public class RouteActivity extends LanguageActivity {
         databaseManager.addData(new Database(51.589833f, 4.773333f, "Begin Vismarkt", 1));
         databaseManager.addData(new Database(51.589362f, 4.774445f, "Begin Havermarkt", 1));
         databaseManager.addData(new Database(51.588833f, 4.775278f, "Grote Kerk", 1));
-        databaseManager.addData(new Database(51.588195f, 4.775138f, "Het Poortje", 1));
-        databaseManager.addData(new Database(51.587083f, 4.775750f, "Ridderstraat", 1));
+        databaseManager.addData(new Database(51.588205f, 4.775272f, "Het Poortje", 1));
+        databaseManager.addData(new Database(51.587173f, 4.775802f, "Ridderstraat", 1));
         databaseManager.addData(new Database(51.587417f, 4.776555f, "Grote Markt", 1));
         databaseManager.addData(new Database(51.588028f, 4.776333f, "Bevrijdingsmonument", 1));
         databaseManager.addData(new Database(51.588750f, 4.776112f, "Stadhuis", 1));
