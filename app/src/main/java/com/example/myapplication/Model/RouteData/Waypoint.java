@@ -11,22 +11,33 @@ public class Waypoint implements Serializable {
     private PointOfInterest pointOfInterest;
     private Boolean visited = false;
     private String name;
-    private String description;
+    private String descriptionNL;
+    private String descriptionEN;
     private transient Location location;
     private float lat;
     private float lon;
     private transient Marker marker;
     
-    public Waypoint(float latitude, float longitude, String name, String description) {
+    public Waypoint(float latitude, float longitude, String name, String descriptionNL, String descriptionEN) {
          this.location = new Location("");
          this.location.setLatitude(latitude);
          this.location.setLongitude(longitude);
          this.lat = latitude;
          this.lon = longitude;
          this.name = name;
-         this.description = description;
+         this.descriptionNL = descriptionNL;
+         this.descriptionEN = descriptionEN;
          this.marker = null;
     }
+
+    public String getDescriptionNL() {
+        return descriptionNL;
+    }
+
+    public String getDescriptionEN() {
+        return descriptionEN;
+    }
+
 
     public void setMarker(Marker marker) {
         this.marker = marker;
@@ -38,10 +49,6 @@ public class Waypoint implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public float getLat() {

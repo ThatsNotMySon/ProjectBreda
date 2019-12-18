@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.route = new Route();
         try {
             for (Database db : currentRouteWaypoints) {
-                route.addWaypoint(new Waypoint(db.getX(), db.getY(), String.valueOf(db.getId()), db.getInfonl()));
+                route.addWaypoint(new Waypoint(db.getX(), db.getY(), String.valueOf(db.getId()), db.getInfonl(), db.getInfoen()));
             }
         } catch (Exception e) {
 
@@ -189,9 +189,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (mUserPosition != null) {
-//            googleMapsDirectionsAPI.executeDirections(new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude()), marker.getPosition());
-        }
+            for (Waypoint wp : route.getWaypoints()){
+                if(marker.equals(wp.getMarker())){
+                    Intent intent = new Intent(MainActivity.this, WaypointActivity.class);
+                    intent.putExtra("WAYPOINT", wp);
+                    startActivity(intent);
+                }
+            }
         return false;
     }
 
