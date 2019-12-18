@@ -6,16 +6,25 @@ public class Database implements Serializable {
 
     private float x;
     private float y;
-    private String info;
+    private String infonl;
+    private String infoen;
     private int id;
     private int routeID;
 
-    public Database(float x, float y, String info , int routeID) {
+    public Database(float x, float y, String infonl, String infoen , int routeID) {
         this.x = x;
         this.y = y;
-        this.info = info;
-
+        this.infonl = infonl;
+        this.infoen = infoen;
         this.routeID = routeID;
+    }
+
+    public String getInfoen() {
+        return infoen;
+    }
+
+    public void setInfoen(String infoen) {
+        this.infoen = infoen;
     }
 
     public Database() {
@@ -38,12 +47,12 @@ public class Database implements Serializable {
         this.y = y;
     }
 
-    public String getInfo() {
-        return info;
+    public String getInfonl() {
+        return infonl;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setInfonl(String info) {
+        this.infonl = info;
     }
 
     public int getId() {

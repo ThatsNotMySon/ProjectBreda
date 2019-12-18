@@ -18,9 +18,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COL1 = "ID";
     private static final String COL2 = "x";
     private static final String COL3 = "y";
-    private static final String COL4 = "info";
-    private static final String COL5 = "routeID";
-    private static final String[] COLUMS = {COL1, COL2, COL3, COL4, COL5};
+    private static final String COL4 = "infonl";
+    private static final String COL5 = "infoen";
+    private static final String COL6 = "routeID";
+    private static final String[] COLUMS = {COL1, COL2, COL3, COL4, COL5, COL6};
 
     public DatabaseManager(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -29,7 +30,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +"x FLOAT, "
-                + "y FLOAT, " + "info STRING, " + "routeID INTEGER )";
+                + "y FLOAT, " + "infonl STRING, " + "infoen STRING, " + "routeID INTEGER )";
         sqLiteDatabase.execSQL(createTable);
     }
 
@@ -39,7 +40,7 @@ public class DatabaseManager extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void deleteOne(float x, float y, String info, int id){
+    public void deleteOne(float x, float y, String infonl, String infoen, int id){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME, "ID = ?", new String[] {id +""  });
         sqLiteDatabase.close();
@@ -60,8 +61,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
                 database.setId(Integer.parseInt(cursor.getString(0)));
                 database.setX(cursor.getFloat(1));
                 database.setY(cursor.getFloat(2));
-                database.setInfo(cursor.getString(3));
-                database.setRouteID(Integer.parseInt(cursor.getString(4)));
+                database.setInfonl(cursor.getString(3));
+                database.setInfoen(cursor.getString(4));
+                database.setRouteID(Integer.parseInt(cursor.getString(5)));
                 databases.add(database);
             } while (cursor.moveToNext());
         }
@@ -88,8 +90,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         database.setId(Integer.parseInt(cursor.getString(0)));
         database.setX(cursor.getFloat(1));
         database.setY(cursor.getFloat(2));
-        database.setInfo(cursor.getString(3));
-        database.setRouteID(Integer.parseInt(cursor.getString(4)));
+        database.setInfonl(cursor.getString(3));
+        database.setInfoen(cursor.getString(4));
+        database.setRouteID(Integer.parseInt(cursor.getString(5)));
 
         return database;
     }
@@ -100,8 +103,9 @@ public class DatabaseManager extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL2, database.getX());
         contentValues.put(COL3, database.getY());
-        contentValues.put(COL4, database.getInfo());
-        contentValues.put(COL5, database.getRouteID());
+        contentValues.put(COL4, database.getInfonl());
+        contentValues.put(COL5, database.getInfoen());
+        contentValues.put(COL6, database.getRouteID());
 
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
 

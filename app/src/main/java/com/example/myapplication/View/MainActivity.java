@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.route = new Route();
         try {
             for (Database db : currentRouteWaypoints) {
-                route.addWaypoint(new Waypoint(db.getX(), db.getY(), String.valueOf(db.getId()), db.getInfo()));
+                route.addWaypoint(new Waypoint(db.getX(), db.getY(), String.valueOf(db.getId()), db.getInfonl()));
             }
         } catch (Exception e) {
 
