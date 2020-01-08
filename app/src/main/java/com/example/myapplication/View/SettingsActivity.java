@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
         final String[] arraySpinner = new String[] {
                 getResources().getString(R.string.dutch), getResources().getString(R.string.english)
         };
-        
+
         if (!languageCode.equals(languageCodes[0])){
             swapArrayItems(languageCodes);
             swapArrayItems(arraySpinner);
