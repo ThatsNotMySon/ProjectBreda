@@ -11,16 +11,25 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 
+import java.util.ArrayList;
+
 public class LocationApi {
 
     private android.location.LocationManager locationManager;
     private LocationListener locationListener;
-    private LocationApiListener locationApiListener;
+    private ArrayList<LocationApiListener> locationApiListeners;
+    private Location lastLocation;
+    private LocationCallback locationCallback;
 
-    public LocationApi(LocationApiListener locationApiListener , Context context) {
-        this.locationApiListener = locationApiListener;
+    public LocationApi(ArrayList<LocationApiListener> locationApiListener , Context context, LocationCallback locationCallback) {
+        this.locationApiListeners = locationApiListener;
+        this.locationCallback = locationCallback;
         //setupLocationService kan ook later aangeroepen worden.
         setupLocationService(context);
+    }
+
+    public Location getLastLocation() {
+        return lastLocation;
     }
 
     public void setupLocationService(Context context) {
@@ -28,22 +37,31 @@ public class LocationApi {
         this.locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                locationApiListener.OnLocationChanged(location);
+                locationCallback.locationCallback(location);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnLocationChanged(location);
+                }
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                locationApiListener.OnStatusChanged(status);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnStatusChanged(status);
+                }
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                locationApiListener.OnProviderEnabled(provider);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnProviderEnabled(provider);
+                }
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                locationApiListener.OnProviderDisabled(provider);
+                for(LocationApiListener locationApiListener : locationApiListeners) {
+                    locationApiListener.OnProviderDisabled(provider);
+                };
             }
         };
         if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
