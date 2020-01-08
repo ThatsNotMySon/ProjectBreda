@@ -4,6 +4,7 @@
     <string name="english">Engels</string>
     <string name="dutch">Nederlands</string>
     <string name="selectLanguage">Selecteer taal</string>
+    <string name="helpText">Voor uw gemak is er een algemene map op de hoofdmenu. Om naar andere paginas te gaan klik je op de drie bolletjes rechts bovenin van het hoofdmenu. Om een route te starten ga je naar de routepagina en selecteer je een route. Van daar uit kan je een bezienswaardigheid selecteren en informatie opvragen. Om instellingen aan te passen ga je naar de instellingenpagina in het hoofdmenu.</string>
     <string name="languageChanged">Herstart de app om verandering te zien</string>
     <string name="ErrorMessage">Iets ging mis</string>
     <string name="NoDescWaypoint">Geen beschrijving beschikbaar</string>

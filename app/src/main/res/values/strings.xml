@@ -10,4 +10,5 @@
     <string name="languageChanged">Restart app to see changes</string>
     <string name="ErrorMessage">Something went wrong</string>
     <string name="NoDescWaypoint">No description available</string>
+    <string name="helpText">For your conveineance we added a general map on the homepage. To go to other pages you click on the three dots top right from the home menu. To start a route, go to route on the homepage and select one. From there you can click waypoints and see information about them. To change settings, you can go to the settings page from home.</string>
 </resources>
