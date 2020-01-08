@@ -30,19 +30,20 @@ public class WaypointActivity extends AppCompatActivity {
         this.nameTV = findViewById(R.id.name_tv);
         this.descTV = findViewById(R.id.description_tv);
 
+        String noDescriptionText = getResources().getString(R.string.NoDescWaypoint);
         if(location.equals("nl")) {
             nameTV.setText(waypoint.getDescriptionNL().split("\\r?\\n")[0]);
             if (waypoint.getDescriptionNL().split("\\r?\\n").length > 1) {
                 descTV.setText(waypoint.getDescriptionNL().split("\\r?\\n")[1]);
             } else {
-                descTV.setText("Geen beschrijving beschikbaar!");
+                descTV.setText(noDescriptionText);
             }
         } else if (location.equals("en")){
             nameTV.setText(waypoint.getDescriptionEN().split("\\r?\\n")[0]);
             if (waypoint.getDescriptionEN().split("\\r?\\n").length > 1) {
                 descTV.setText(waypoint.getDescriptionEN().split("\\r?\\n")[1]);
             } else {
-                descTV.setText("No description available!");
+                descTV.setText(noDescriptionText);
             }
         }
 
