@@ -6,11 +6,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.myapplication.Model.Datamanagement.Database;
 import com.example.myapplication.Model.API.GoogleMapsDirectionsAPI;
+import com.example.myapplication.Model.Datamanagement.DatabaseManager;
 import com.example.myapplication.Model.LocationData.LocationApi;
 import com.example.myapplication.Model.LocationData.LocationApiListener;
 import com.example.myapplication.Model.LocationData.LocationCallback;
@@ -37,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -56,10 +64,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<Database> allwaypoints;
     private ArrayList<Database> currentRouteWaypoints;
     private ArrayList<LatLng> waypointsLatLng;
+    private String lang;
+
+    public void setLocale(String lang){
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        config.setLocale(locale);
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+        Resources resources = getBaseContext().getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = new Locale(lang);
+        getBaseContext().getApplicationContext().createConfigurationContext(configuration);
+
+        Configuration cfg = new Configuration();
+        if (!TextUtils.isEmpty(lang)) {
+            cfg.locale = new Locale(lang);
+        }
+        else {
+            cfg.locale = Locale.getDefault();
+        }
+        this.getResources().updateConfiguration(cfg, null);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(DatabaseManager.with(this).getLanguage());
+
         setContentView(R.layout.activity_main);
         try {
             currentFirst = (Database) getIntent().getSerializableExtra("routeId");
@@ -198,6 +231,4 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         return false;
     }
-
-
 }

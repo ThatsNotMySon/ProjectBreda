@@ -7,5 +7,5 @@
     <string name="english">English</string>
     <string name="dutch">Dutch</string>
     <string name="selectLanguage">Select language</string>
-    <string name="languageChanged">Return to see changes</string>
+    <string name="languageChanged">Restart app to see changes</string>
 </resources>

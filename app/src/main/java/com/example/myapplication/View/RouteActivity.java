@@ -32,7 +32,7 @@ public class RouteActivity extends LanguageActivity {
 
         int orientation = getResources().getConfiguration().orientation;
 
-        this.databaseManager = new DatabaseManager(getApplicationContext());
+        this.databaseManager = DatabaseManager.with(getApplicationContext());
         fillDatabase();
 
         databases = new ArrayList<>();
