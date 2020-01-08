@@ -8,4 +8,6 @@
     <string name="dutch">Dutch</string>
     <string name="selectLanguage">Select language</string>
     <string name="languageChanged">Restart app to see changes</string>
+    <string name="ErrorMessage">Something went wrong</string>
+    <string name="NoDescWaypoint">No description available</string>
 </resources>

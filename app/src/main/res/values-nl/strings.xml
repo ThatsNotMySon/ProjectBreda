@@ -5,4 +5,6 @@
     <string name="dutch">Nederlands</string>
     <string name="selectLanguage">Selecteer taal</string>
     <string name="languageChanged">Herstart de app om verandering te zien</string>
+    <string name="ErrorMessage">Iets ging mis</string>
+    <string name="NoDescWaypoint">Geen beschrijving beschikbaar</string>
 </resources>
