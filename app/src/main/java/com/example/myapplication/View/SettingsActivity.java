@@ -46,38 +46,43 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        this.spinner = findViewById(R.id.languageSpinner);
+        try {
+            this.spinner = findViewById(R.id.languageSpinner);
 
-        final String[] languageCodes = new String[]{
-                "nl", "en"
-        };
+            final String[] languageCodes = new String[]{
+                    "nl", "en"
+            };
 
-        final String[] arraySpinner = new String[] {
-                getResources().getString(R.string.dutch), getResources().getString(R.string.english)
-        };
+            final String[] arraySpinner = new String[] {
+                    getResources().getString(R.string.dutch), getResources().getString(R.string.english)
+            };
 
-        if (!languageCode.equals(languageCodes[0])){
-            swapArrayItems(languageCodes);
-            swapArrayItems(arraySpinner);
+            if (!languageCode.equals(languageCodes[0])){
+                swapArrayItems(languageCodes);
+                swapArrayItems(arraySpinner);
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    arraySpinner);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            this.spinner.setAdapter(adapter);
+            this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    setAppLocale(languageCodes[i]);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_item,
-                arraySpinner);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinner.setAdapter(adapter);
-        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setAppLocale(languageCodes[i]);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        catch (Exception ex){
+            Toast.makeText(this, getResources().getString(R.string.ErrorMessage), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setAppLocale(String localeCode){
