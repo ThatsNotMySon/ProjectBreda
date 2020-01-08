@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseManager extends SQLiteOpenHelper {
 
@@ -22,9 +23,17 @@ public class DatabaseManager extends SQLiteOpenHelper {
     private static final String COL5 = "infoen";
     private static final String COL6 = "routeID";
     private static final String[] COLUMS = {COL1, COL2, COL3, COL4, COL5, COL6};
+    private Context context;
+    private static DatabaseManager instance;
 
-    public DatabaseManager(Context context) {
+    private DatabaseManager(Context context) {
         super(context, TABLE_NAME, null, 1);
+        this.context = context;
+    }
+
+    public static DatabaseManager with(Context context) {
+        if (instance == null) instance = new DatabaseManager(context);
+        return instance;
     }
 
     @Override
@@ -100,6 +109,18 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public void removeData(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME);
+    }
+
+    public void setLanguage(String language){
+        context.getSharedPreferences("lang", Context.MODE_PRIVATE).edit().putString("lang", language).commit();
+    }
+
+    public String getLanguage(){
+        String langIfEmpty = Locale.getDefault().getLanguage();
+        if (langIfEmpty != "nl" | langIfEmpty != "en"){
+            langIfEmpty = "en";
+        }
+        return context.getSharedPreferences("lang", Context.MODE_PRIVATE).getString("lang", langIfEmpty);
     }
 
     public boolean addData(Database database){

@@ -1,9 +1,12 @@
 package com.example.myapplication.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -21,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.myapplication.Model.Datamanagement.DatabaseManager;
 import com.example.myapplication.R;
 
 import java.util.HashMap;
@@ -30,53 +34,59 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static String TAG = "SettingsActivity";
     private Spinner spinner;
-    public static String languageCode = "en";
+    public static String languageCode = DatabaseManager.with(null).getLanguage();
+
+    private void swapArrayItems(String[] items){
+        String first = items[0];
+        items[0] = items[1];
+        items[1] = first;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        this.spinner = findViewById(R.id.languageSpinner);
+        try {
+            this.spinner = findViewById(R.id.languageSpinner);
 
-        final String[] languageCodes = new String[]{
-                "en", "nl"
-        };
+            final String[] languageCodes = new String[]{
+                    "nl", "en"
+            };
 
-        final String[] arraySpinner = new String[] {
-                getResources().getString(R.string.english), getResources().getString(R.string.dutch)
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinner.setAdapter(adapter);
+            final String[] arraySpinner = new String[] {
+                    getResources().getString(R.string.dutch), getResources().getString(R.string.english)
+            };
 
-        this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setAppLocale(languageCodes[i]);
+            if (!languageCode.equals(languageCodes[0])){
+                swapArrayItems(languageCodes);
+                swapArrayItems(arraySpinner);
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_spinner_item,
+                    arraySpinner);
 
-            }
-        });
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            this.spinner.setAdapter(adapter);
+            this.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    setAppLocale(languageCodes[i]);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        }
+        catch (Exception ex){
+            Toast.makeText(this, getResources().getString(R.string.ErrorMessage), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setAppLocale(String localeCode){
-        setLanguage(localeCode, Resources.getSystem());
+        DatabaseManager.with(getApplicationContext()).setLanguage(localeCode);
         Toast.makeText(this, getResources().getString(R.string.languageChanged), Toast.LENGTH_SHORT).show();
-    }
-
-    public static void setLanguage(String localCode, Resources res){
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-            conf.setLocale(new Locale(localCode.toLowerCase()));
-        } else {
-            conf.locale = new Locale(localCode.toLowerCase());
-        }
-        res.updateConfiguration(conf, dm);
-        languageCode = localCode;
     }
 }
